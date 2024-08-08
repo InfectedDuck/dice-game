@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io@4.0.1/dist/socket.io.min.js"></script>
+    <script src="/static/game.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        #info { margin-top: 20px; }
+        #winner { margin-top: 20px; color: green; font-weight: bold; }
+        #userRolls, #botRolls { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Game Simulation</h1>
+    <button class="button" id="roll">Roll Dice</button>
+    <button class="button" id="increaseMoney">Increase Money</button>
+    <div id="info"></div>
+    <div id="winner"></div>
+    <div id="userRolls"></div>
+    <div id="botRolls"></div>
+</body>
+</html>
