@@ -41,7 +41,7 @@ def start_game(data):
     money = data.get('money')
     rounds = data.get('rounds')
 
-    if not room or not bot_option or money is None or rounds is None:
+    if not room or bot_option is None or money is None or rounds is None:
         emit('error', {'message': 'Missing data.'})
         return
 
@@ -58,11 +58,17 @@ def start_game(data):
 def roll_dice(data):
     room = data['room']
     player_id = request.sid
+    
+    if room not in games:
+        emit('error', {'message': 'Room not found.'})
+        return
+
     bot_option = games[room]['bot_option']
     money = games[room]['money']
     rounds = games[room]['rounds']
 
     if player_id not in games[room]['players']:
+        emit('error', {'message': 'Player not in room.'})
         return
 
     user = dg.User()
@@ -81,6 +87,15 @@ def roll_dice(data):
             bot_result1_dice, bot_result2_dice = bot.bot_roll_ultimate()
 
         user_result1_dice, user_result2_dice = user.roll_dice()
+
+        # Ensure that the dice results are valid keys in dictionary_of_dices
+        if bot_result1_dice not in dg.dictionary_of_dices or bot_result2_dice not in dg.dictionary_of_dices:
+            emit('error', {'message': 'Invalid dice result for bot.'})
+            return
+        if user_result1_dice not in dg.dictionary_of_dices or user_result2_dice not in dg.dictionary_of_dices:
+            emit('error', {'message': 'Invalid dice result for user.'})
+            return
+
         bot_result1 += dg.dictionary_of_dices[bot_result1_dice]
         bot_result2 += dg.dictionary_of_dices[bot_result2_dice]
         user_result1 += dg.dictionary_of_dices[user_result1_dice]

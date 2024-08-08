@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+    const socket = io();  // Ensure the Socket.IO client library is included and available
     const room = window.location.pathname.split('/').pop();
     const rollButton = document.getElementById('roll');
     const increaseMoneyButton = document.getElementById('increaseMoney');
@@ -8,8 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userRollsDiv = document.getElementById('userRolls');
     const botRollsDiv = document.getElementById('botRolls');
 
+    // Join the room
     socket.emit('join_room', { room: room });
 
+    // Update information
     socket.on('game_update', (data) => {
         infoDiv.textContent = `Money: ${data.money}, Rounds Left: ${data.rounds}`;
         if (data.winner) {
@@ -19,16 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Roll dice button click handler
     rollButton.addEventListener('click', () => {
         socket.emit('roll_dice', { room: room });
     });
 
+    // Increase money button click handler
     increaseMoneyButton.addEventListener('click', () => {
         socket.emit('increase_money', { room: room });
     });
 
+    // Handle game results
     socket.on('game_result', (data) => {
-        // Show the results of the dice rolls
         let userRolls = data.user_results.map((result, index) => 
             `Round ${index + 1}: User rolled ${result.user_rolls.join(', ')}`
         ).join('<br>');
@@ -45,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         infoDiv.textContent = `Money: ${data.money} | User Total: ${data.user_total} | Bot Total: ${data.bot_total}`;
     });
 
+    // Handle errors
     socket.on('error', (data) => {
         alert(data.message);
     });
