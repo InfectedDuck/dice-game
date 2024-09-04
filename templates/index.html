@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Dice Game</h1>
+    <button onclick="createRoom()">Create New Room</button>
+    <br><br>
+    <form id="gameForm" style="display:none;">
+        <label for="room">Room ID:</label>
+        <input type="text" id="room" name="room" readonly>
+        <br>
+        <label for="botOption">Choose a bot:</label>
+        <select id="botOption" name="botOption">
+            <option value="1">Easy BOT</option>
+            <option value="2">Medium BOT</option>
+            <option value="3">Hard BOT</option>
+            <option value="4">ULTIMATE BOT</option>
+        </select>
+        <br>
+        <label for="rounds">Rounds:</label>
+        <input type="number" id="rounds" name="rounds" min="1" required>
+        <br>
+        <label for="money">Money:</label>
+        <input type="number" id="money" name="money" min="1" required>
+        <br>
+        <button type="button" onclick="startGame()">Start Game</button>
+    </form>
+    <div id="result"></div>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+    var socket = io();
+
+    function createRoom() {
+        socket.emit('create_room', {});
+    }
+
+    socket.on('room_created', function(data) {
+        if (data && data.room) {
+            document.getElementById('room').value = data.room;
+            document.getElementById('gameForm').style.display = 'block';
+        } else {
+            alert("Failed to create room.");
+        }
+    });
+
+    function startGame() {
+        var room = document.getElementById('room').value;
+        var botOption = parseInt(document.getElementById('botOption').value);
+        var rounds = parseInt(document.getElementById('rounds').value);
+        var money = parseInt(document.getElementById('money').value);
+
+        if (!room || isNaN(botOption) || isNaN(rounds) || isNaN(money)) {
+            alert("Please fill out all fields correctly.");
+            return;
+        }
+
+        socket.emit('start_game', {
+            room: room,
+            bot_option: botOption,
+            money: money,
+            rounds: rounds
+        });
+    }
+
+    socket.on('game_started', function(data) {
+        if (data && data.room) {
+            window.location.href = '/game/' + data.room; // Redirect to the game page
+        } else {
+            document.getElementById('result').innerText = 'Game started with bot option: ' + data.bot_option;
+        }
+    });
+
+    socket.on('error', function(data) {
+        alert(data.message || 'An error occurred.');
+    });
+    </script>
+</body>
+</html>
