@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a real-time dice game web application built using Python's Flask and Flask-SocketIO libraries. It allows users to create and join game rooms, play a dice-based game against a bot with varying difficulty levels, and track game results. The user interface is designed with KivyMD for a modern and intuitive experience.
+This project is a real-time dice game web application built using Python's Flask and Flask-SocketIO libraries. It allows users to create and join game rooms, play a dice-based game against a bot with varying difficulty levels, and track game results. The user interface is designed with HTML, CSS, and JavaScript for a modern and intuitive experience.
 
 ## Features
 
@@ -32,7 +32,7 @@ This project is a real-time dice game web application built using Python's Flask
   - Manages game rooms, player actions, and game state.
   - Handles real-time communication and game logic.
 
-- **Frontend (KivyMD):** 
+- **Frontend (HTML, CSS, and JavaScript):** 
   - Provides a user-friendly interface for interacting with the game.
   - Includes features for creating rooms, joining rooms, and viewing game results.
 
