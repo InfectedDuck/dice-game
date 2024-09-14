@@ -57,9 +57,8 @@ This project is a real-time dice game web application built using Python's Flask
 - **View Results:** 
   - After the game ends, view the results to see who won and how the money changed.
 
-## Contributing
-
-Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
+## Caution
+The project is not ended, and the application is NOT working properly
 
 ## License
 
